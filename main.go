@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/AlexBaily/ecs-helper/cmd"
+
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.Execute()
 }
