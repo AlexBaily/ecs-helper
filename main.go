@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"github.com/AlexBaily/ecs-helper/cmd"
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.Execute()
 }
