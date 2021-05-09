@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"ecs-helper/ecs"
+	"github.com/AlexBaily/ecs-helper/ecs"
 )
 
 func init() {
