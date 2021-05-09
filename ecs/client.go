@@ -7,21 +7,21 @@ import (
 )
 
 //ecsInt is the ecs interface struct that holds the ECSAPI, used for mocking.
-type ecsInt struct {
+type EcsInt struct {
 	Client ecsiface.ECSAPI
 }
 
-//ecsClient holds the reference to the ECS interface we are using in the package.
-var ecsClient *ecsInt
+//EcsClient holds the reference to the ECS interface we are using in the package.
+var EcsClient *EcsInt
 
 //Configure the session with the ECS service client.
 func configureECS() {
-	ecsClient = new(ecsInt)
+	EcsClient = new(EcsInt)
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
     svc := ecs.New(sess)
-	ecsClient.Client = ecsiface.ECSAPI(svc)
+	EcsClient.Client = ecsiface.ECSAPI(svc)
 }
 
 func init() {

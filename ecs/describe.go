@@ -8,10 +8,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/ecs"
 )
 //DescribeEcsClusters will take an input of a string and return a list of clusters.
-func DescribeEcsClusters(cluster string) (*ecs.DescribeClustersOutput) {
+func (e EcsInt) DescribeEcsClusters(cluster string) (*ecs.DescribeClustersOutput) {
 
 	input := &ecs.DescribeClustersInput{}
-	output, err := ecsClient.Client.DescribeClusters(input)
+	output, err := e.Client.DescribeClusters(input)
 
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {

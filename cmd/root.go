@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"ecs-helper/ecs"
 )
 
 func init() {
@@ -37,7 +38,7 @@ var descClusterCmd = &cobra.Command{
 	Long: `Prints information on ECS clusters
 includes information on ecs services and host instances.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//TODO ecs.DescribeClusters()
+		fmt.Println(ecs.EcsClient.DescribeEcsClusters(""))
 	},
 }
 
