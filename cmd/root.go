@@ -9,6 +9,8 @@ import (
 )
 
 func init() {
+	descClusterCmd.Flags().StringVarP(&cluid, "cluster-id", "i", "",
+	 "The cluster-id to query.")
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(descClusterCmd)
 }
@@ -32,13 +34,14 @@ var versionCmd = &cobra.Command{
 	},
 }
 
+var cluid string
 var descClusterCmd = &cobra.Command{
 	Use:   "describe-clusters",
 	Short: "Prints information on ECS clusters",
 	Long: `Prints information on ECS clusters
 includes information on ecs services and host instances.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(ecs.EcsClient.DescribeEcsClusters(""))
+		fmt.Println(ecs.EcsClient.DescribeEcsClusters(cluid))
 	},
 }
 
