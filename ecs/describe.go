@@ -3,15 +3,24 @@ package ecs
 import (
 	"fmt"
 	"log"
-
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/ecs"
 )
 //DescribeEcsClusters will take an input of a string and return a list of clusters.
 func (e EcsInt) DescribeEcsClusters(cluster string) (*ecs.DescribeClustersOutput) {
+	var clusters []*string
+	if cluster == "" {
 
-	input := &ecs.DescribeClustersInput{}
+	} else {
+		clusters = append(clusters, aws.String(cluster))
+	}
+
+	input := &ecs.DescribeClustersInput{
+		Clusters: clusters,
+	}
 	output, err := e.Client.DescribeClusters(input)
+
 
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
