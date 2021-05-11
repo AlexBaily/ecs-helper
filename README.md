@@ -1,6 +1,14 @@
 # ecs-helper
 A command line tool to help navigate ECS clusters, troubleshooting and maintenance.
 
+AWS Credentials are loaded from (and in order from first to last):
+
+* Environment Variables
+* Shared Credentials file (~/.aws/config)
+* Shared Configuration file (~/.aws/credentials)
+* EC2 Instance Metadata
+
+
 
 ## Example usage
 * * *
