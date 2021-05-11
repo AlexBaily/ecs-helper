@@ -1,7 +1,6 @@
 package ecs
 
 import (
-	"fmt"
 	"log"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -47,7 +46,6 @@ func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 		}
 		ecsClusters = append(ecsClusters, c)
 	}
-	fmt.Println(ecsClusters)
 	return ecsClusters
 
 }
