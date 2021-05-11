@@ -7,8 +7,8 @@ A command line tool to help navigate ECS clusters, troubleshooting and maintenan
 
 ```
 $ ecs-helper describe-clusters -i prod-cluster
-CLUSTERARN                                              CLUSTERNAME     STATUS 
-arn:aws:ecs:eu-west-1:000000000000:cluster/prod-cluster prod-cluster    ACTIVE
+CLUSTER ARN                                             CLUSTER NAME    STATUS 
+arn:aws:ecs:eu-west-1:360577070949:cluster/prod-cluster prod-cluster    ACTIVE
 ```
 
 
