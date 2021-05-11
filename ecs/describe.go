@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go/service/ecs"
 )
 //DescribeEcsClusters will take an input of a string and return a list of clusters.
-func (e EcsInt) DescribeEcsClusters(cluster string) (*ecs.DescribeClustersOutput) {
+//Returns: []EcsCluster .
+func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 	var clusters []*string
 	if cluster == "" {
-
+		//Todo Add list-clusters to find all available clusters.
 	} else {
 		clusters = append(clusters, aws.String(cluster))
 	}
-
 	input := &ecs.DescribeClustersInput{
 		Clusters: clusters,
 	}
@@ -37,7 +37,17 @@ func (e EcsInt) DescribeEcsClusters(cluster string) (*ecs.DescribeClustersOutput
 			}
 		}
 	}
-	fmt.Println(output)
-	return output
+
+	var ecsClusters []EcsCluster
+	for _, cluster := range output.Clusters {
+		c := EcsCluster{
+			ClusterArn: *cluster.ClusterArn, 
+			ClusterName: *cluster.ClusterName,
+			Status: *cluster.Status,
+		}
+		ecsClusters = append(ecsClusters, c)
+	}
+	fmt.Println(ecsClusters)
+	return ecsClusters
 
 }
