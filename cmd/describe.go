@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/AlexBaily/ecs-helper/ecs"
+	"ecs-helper/ecs"
 	"github.com/olekukonko/tablewriter"
 
 )
@@ -23,7 +23,7 @@ func describeClustersCmd(cluid string) {
 	table.SetBorder(false)
 	table.SetTablePadding("\t") // pad with tabs
 	table.SetNoWhiteSpace(true)
-	table.SetHeader([]string{"ClusterArn", "ClusterName", "Status"})
+	table.SetHeader([]string{"Cluster Arn", "Cluster Name", "Status"})
 	clusters := ecs.EcsClient.DescribeEcsClusters(cluid)
 	var data [][]string
 	for _, cluster := range clusters {
