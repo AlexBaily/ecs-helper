@@ -11,7 +11,7 @@ import (
 func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 	var clusters []*string
 	if cluster == "" {
-		//Todo Add list-clusters to find all available clusters.
+		clusters = e.ListAllClusterArns()
 	} else {
 		clusters = append(clusters, aws.String(cluster))
 	}
@@ -48,4 +48,34 @@ func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 	}
 	return ecsClusters
 
+}
+
+//ListAllClusterArns will return a list of all ClusterArns in the region
+// Returns: cluster []*string
+func (e EcsInt) ListAllClusterArns() ([]*string) {
+	var clusters []*string
+	err := e.Client.ListClustersPages(&ecs.ListClustersInput{},
+		func(page *ecs.ListClustersOutput, lastPage bool) bool {
+			for _, cluster := range page.ClusterArns {
+				clusters = append(clusters, cluster)
+			}
+			return page.NextToken != nil
+		})
+
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case ecs.ErrCodeServerException :
+				log.Fatal("Server exception occured.")
+			case ecs.ErrCodeClientException:
+				log.Fatal(`Client exception occurred, please check credential permissions
+					or resource identifiers.`)
+			case ecs.ErrCodeInvalidParameterException:
+				log.Fatal("Invalid parameter for given API request.")
+			default:
+				log.Fatal(aerr.Error())
+			}
+		}
+	}
+	return clusters
 }
