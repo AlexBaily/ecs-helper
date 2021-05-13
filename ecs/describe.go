@@ -1,7 +1,6 @@
 package ecs
 
 import (
-	"fmt"
 	"log"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -31,7 +30,7 @@ func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 				log.Fatal(`Client exception occurred, please check credential permissions
 				 or resource identifiers.`)
 			case ecs.ErrCodeInvalidParameterException:
-				log.Fatal("Invalid parameter for given API request.")
+				log.Fatal("Invalid parameter for describe-clusters API request.")
 			default:
 				log.Fatal(aerr.Error())
 			}
@@ -82,7 +81,7 @@ func (e EcsInt) ListAllClusterArns() ([]*string) {
 }
 
 
-func (e EcsInt) DescribeServices(cluid string, services []string) {
+func (e EcsInt) DescribeServices(cluid string, services []string) ([]EcsService) {
 	input := &ecs.DescribeServicesInput{
 		Cluster: aws.String(cluid),
 		Services: aws.StringSlice(services),
@@ -99,13 +98,25 @@ func (e EcsInt) DescribeServices(cluid string, services []string) {
 				log.Fatal(`Client exception occurred, please check credential permissions
 				 or resource identifiers.`)
 			case ecs.ErrCodeInvalidParameterException:
-				log.Fatal("Invalid parameter for given API request.")
+				log.Fatal("Invalid parameter for describe-services API request.")
 			default:
 				log.Fatal(aerr.Error())
 			}
 		}
 	}
-	fmt.Println(output)
+
+	var ecsServices []EcsService
+	for _, service := range output.Services {
+		s := EcsService{
+			ServiceName: *service.ServiceName, 
+			LaunchType: *service.LaunchType,
+			RunningCount: *service.RunningCount,
+			DesiredCount: *service.DesiredCount,
+			PendingCount: *service.PendingCount,
+		}
+		ecsServices = append(ecsServices, s)
+	}
+	return ecsServices
 
 
 }
