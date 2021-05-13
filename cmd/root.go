@@ -10,8 +10,13 @@ import (
 func init() {
 	descClusterCmd.Flags().StringVarP(&cluid, "cluster-id", "i", "",
 	 "The cluster-id to query.")
+	descServiceCmd.Flags().StringVarP(&cluid, "cluster-id", "i", "",
+	 "The cluster-id to query.")
+	descServiceCmd.Flags().StringSliceVarP(&sname, "service-name", "s", []string{},
+	 "The service name to query.")
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(descClusterCmd)
+	rootCmd.AddCommand(descServiceCmd)
 }
 
 var rootCmd = &cobra.Command{
@@ -38,11 +43,22 @@ var descClusterCmd = &cobra.Command{
 	Use:   "describe-clusters",
 	Short: "Prints information on ECS clusters",
 	Long: `Prints information on ECS clusters
-includes information on ecs services and host instances.`,
+includes information on ecs services and host instances (TBD).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		describeClustersCmd(cluid)
 	},
 }
+
+var sname []string
+var descServiceCmd = &cobra.Command{
+	Use:   "describe-services",
+	Short: "Prints information on ECS Services",
+	Long: "Prints information on ECS Services",
+	Run: func(cmd *cobra.Command, args []string) {
+		describeServicesCmd(cluid, sname)
+	},
+}
+
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {

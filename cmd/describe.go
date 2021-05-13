@@ -9,6 +9,7 @@ import (
 )
 
 //describeClustersCmd takes a cluster id and renders a table of results.
+//Returns: void
 func describeClustersCmd(cluid string) {
 
 	table := tablewriter.NewWriter(os.Stdout)
@@ -32,4 +33,18 @@ func describeClustersCmd(cluid string) {
 	}
 	table.AppendBulk(data)
 	table.Render()
+}
+
+
+// describeServicesCmd takes a cluster id or a service naame and outputs information.
+// A cluster ID and service is required to perform this operation.
+// If not cluster id or service is supplied then all services on all clusters are returned.
+// Returns: void
+func describeServicesCmd(cluid string, service []string) {
+	clusters := ecs.EcsClient.DescribeEcsClusters(cluid)
+	for _, cluster := range clusters {
+		ecs.EcsClient.DescribeServices(cluster.ClusterArn, service)
+	}
+
+
 }

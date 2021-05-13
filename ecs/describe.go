@@ -1,6 +1,7 @@
 package ecs
 
 import (
+	"fmt"
 	"log"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -78,4 +79,33 @@ func (e EcsInt) ListAllClusterArns() ([]*string) {
 		}
 	}
 	return clusters
+}
+
+
+func (e EcsInt) DescribeServices(cluid string, services []string) {
+	input := &ecs.DescribeServicesInput{
+		Cluster: aws.String(cluid),
+		Services: aws.StringSlice(services),
+	}
+	output, err := e.Client.DescribeServices(input)
+
+
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case ecs.ErrCodeServerException :
+				log.Fatal("Server exception occured.")
+			case ecs.ErrCodeClientException:
+				log.Fatal(`Client exception occurred, please check credential permissions
+				 or resource identifiers.`)
+			case ecs.ErrCodeInvalidParameterException:
+				log.Fatal("Invalid parameter for given API request.")
+			default:
+				log.Fatal(aerr.Error())
+			}
+		}
+	}
+	fmt.Println(output)
+
+
 }
