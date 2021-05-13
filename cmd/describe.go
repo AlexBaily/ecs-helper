@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"ecs-helper/ecs"
+	"github.com/AlexBaily/ecs-helper/ecs"
 	"github.com/olekukonko/tablewriter"
 
 )
