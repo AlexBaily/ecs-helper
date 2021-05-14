@@ -80,7 +80,8 @@ func (e EcsInt) ListAllClusterArns() ([]*string) {
 	return clusters
 }
 
-
+//DescribeServices will return a list of services based on a cluster.
+//Returns: []EcsService
 func (e EcsInt) DescribeServices(cluid string, services []string) ([]EcsService) {
 	
 
