@@ -84,7 +84,10 @@ func (e EcsInt) ListAllClusterArns() ([]*string) {
 //Returns: []EcsService
 func (e EcsInt) DescribeServices(cluid string, services []string) ([]EcsService) {
 	
-
+	if len(services) < 1 {
+		//Convert []*string to []string
+		services = aws.StringValueSlice(e.ListAllServicesArns(cluid))
+	}
 	var ecsServices []EcsService
 	//ecs.DescribeServicesInput will only take services in batches of 10.
 	batch := 10
@@ -131,4 +134,37 @@ func (e EcsInt) DescribeServices(cluid string, services []string) ([]EcsService)
 	}
 
 	return ecsServices
+}
+
+
+//ListAllServicesArns will return a list of all services in the cluster.
+// Returns: services []*string
+func (e EcsInt) ListAllServicesArns(cluid string) ([]*string) {
+	var services []*string
+	err := e.Client.ListServicesPages(&ecs.ListServicesInput{
+		Cluster: aws.String(cluid),
+	},
+		func(page *ecs.ListServicesOutput, lastPage bool) bool {
+			for _, service := range page.ServiceArns {
+				services = append(services, service)
+			}
+			return page.NextToken != nil
+		})
+
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case ecs.ErrCodeServerException :
+				log.Fatal("Server exception occured.")
+			case ecs.ErrCodeClientException:
+				log.Fatal(`Client exception occurred, please check credential permissions
+					or resource identifiers.`)
+			case ecs.ErrCodeInvalidParameterException:
+				log.Fatal("Invalid parameter for given API request.")
+			default:
+				log.Fatal(aerr.Error())
+			}
+		}
+	}
+	return services
 }
