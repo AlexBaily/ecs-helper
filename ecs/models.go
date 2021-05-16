@@ -9,6 +9,9 @@ type EcsCluster struct {
 }
 
 type EcsService struct {
-	DesiredCount int `json:DesiredCount`
-	PendingCount int `json:PendingCount`
+	ServiceName	 string `json:ServiceName`
+	LaunchType   string `json:LaunchType`
+	RunningCount int64 `json:RunningCount`
+	DesiredCount int64 `json:DesiredCount`
+	PendingCount int64 `json:PendingCount`
 }
