@@ -4,7 +4,7 @@ import (
 	"os"
 	"strconv"
 
-	"ecs-helper/ecs"
+	"github.com/AlexBaily/ecs-helper/ecs"
 	"github.com/olekukonko/tablewriter"
 
 )

@@ -40,7 +40,6 @@ func (e EcsInt) DescribeEcsClusters(cluster string) ([]EcsCluster) {
 	var ecsClusters []EcsCluster
 	for _, cluster := range output.Clusters {
 		c := EcsCluster{
-			ClusterArn: *cluster.ClusterArn, 
 			ClusterName: *cluster.ClusterName,
 			Status: *cluster.Status,
 		}
